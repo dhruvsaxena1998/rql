@@ -6,6 +6,11 @@
 
 ## What's Left to Build
 - **MVP Development**
+  - [X] Create a new Git repo
+  - [X] Setup memory bank
+  - [ ] Add a README file
+  - [ ] Set up linters (e.g. golangci‐lint) and formatters.
+  - [ ] Define project layout
   - [ ] Define the grammar using Participle.
   - [ ] Build the AST model.
   - [ ] Implement the translator to convert AST to JSONLogic.
@@ -23,6 +28,7 @@
   - [ ] Support more complex JSONLogic constructs.
   - [ ] Evaluate DSL and Value via HTTP API.
   - [ ] Implement a Rule Engine (CRUD) for managing rules.
+  
 ## Current Status
 - The project is currently in the MVP development phase.
 - The initial parser using Participle has been created.
