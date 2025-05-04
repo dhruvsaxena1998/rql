@@ -1,16 +1,16 @@
-# RQL: Rule Query Language
+# REL: Rule Query Language
 ## Product Requirements Document (PRD)
 
 ## 1. Introduction
 
 ### 1.1 Document Purpose
-This Product Requirements Document (PRD) defines the requirements for Rule Query Language (RQL), a domain-specific language for defining conditional logic that translates to JSONLogic. This document will serve as the primary reference for the development team and stakeholders.
+This Product Requirements Document (PRD) defines the requirements for Rule Query Language (REL), a domain-specific language for defining conditional logic that translates to JSONLogic. This document will serve as the primary reference for the development team and stakeholders.
 
 ### 1.2 Product Overview
-RQL is a human-readable language that allows users to define conditional logic in a natural syntax, which is then translated into JSONLogic-compatible JSON. This product includes both a language definition, a parser library in Go, a command-line interface, and an HTTP API for integration with other systems.
+REL is a human-readable language that allows users to define conditional logic in a natural syntax, which is then translated into JSONLogic-compatible JSON. This product includes both a language definition, a parser library in Go, a command-line interface, and an HTTP API for integration with other systems.
 
 ### 1.3 Scope
-This document covers the requirements for the minimum viable product (MVP) of RQL, with references to future phases for context. The MVP focuses on core language features, parsing, translation to JSONLogic, and essential developer tools.
+This document covers the requirements for the minimum viable product (MVP) of REL, with references to future phases for context. The MVP focuses on core language features, parsing, translation to JSONLogic, and essential developer tools.
 
 ## 2. Vision and Goals
 
@@ -21,7 +21,7 @@ To create the standard tool for defining business rules and conditional logic in
 1. Reduce the time and complexity required to author business rules by 70%
 2. Eliminate errors from manual JSONLogic creation
 3. Enable non-technical stakeholders to participate in rule creation and validation
-4. Establish RQL as the go-to intermediate representation for rule engines
+4. Establish REL as the go-to intermediate representation for rule engines
 
 ### 2.3 User Goals
 1. Write conditional logic in a natural, readable syntax
@@ -82,7 +82,7 @@ To create the standard tool for defining business rules and conditional logic in
 ### 4.1 Language Specification
 
 #### 4.1.1 Syntax Overview
-RQL must support a human-readable syntax for defining conditional logic that resembles natural language expressions. The basic structure should be familiar to anyone with programming experience while still being approachable to non-developers.
+REL must support a human-readable syntax for defining conditional logic that resembles natural language expressions. The basic structure should be familiar to anyone with programming experience while still being approachable to non-developers.
 
 #### 4.1.2 Operators
 The language must support the following operators for MVP:
@@ -117,24 +117,23 @@ The language must support the following operators for MVP:
 - `@`: Denotes a variable (e.g., `@age` refers to the "age" variable)
 
 #### 4.1.3 Data Types
-RQL must support the following data types in the MVP:
+REL must support the following data types in the MVP:
 - Numbers (integers and floats)
 - Booleans (`true`, `false`)
 - Variables (prefixed with `@`)
 - Strings (enclosed in double or single quotes)
 
 #### 4.1.4 Expression Structure
-Expressions in RQL should follow these structural rules:
+Expressions in REL should follow these structural rules:
 - Binary operations (e.g., `@age > 18 AND @name == "John"`)
 - Unary operations (e.g., `@role NOT IN ["admin", "guest"] AND @isActive === true`)
 - Parentheses for grouping (e.g., `(@age > 18 AND @age < 65) OR @isVIP === true`)
 - Function calls (e.g., `MAX(@score1, @score2, @score3)`)
 
 #### 4.1.5 Operator Precedence
-RQL must define and respect operator precedence, following standard programming language conventions:
+REL must define and respect operator precedence, following standard programming language conventions:
 1. Parentheses
-2. Function calls
-3. Unary operators (NOT)
+2. Unary operators (NOT)
 4. Multiplicative operators (*, /, %)
 5. Additive operators (+, -)
 6. Comparison operators (>, <, >=, <=, ==, ===, !=, !==, BETWEEN)
@@ -145,7 +144,7 @@ RQL must define and respect operator precedence, following standard programming 
 
 #### 4.2.1 Parsing Capabilities
 The parser must:
-- Parse RQL expressions into an Abstract Syntax Tree (AST)
+- Parse REL expressions into an Abstract Syntax Tree (AST)
 - Handle all operators and data types specified in the language
 - Provide detailed error messages with line and column information
 - Be deterministic and produce consistent results for the same input
@@ -168,7 +167,7 @@ The parser must:
 The translator must:
 - Convert the AST into valid JSONLogic structures
 - Support all operators and data types in the language specification
-- Preserve the original semantics of the RQL expression
+- Preserve the original semantics of the REL expression
 - Generate optimized JSONLogic when possible (avoiding unnecessary nesting)
 
 #### 4.3.2 Variable Handling
@@ -178,7 +177,7 @@ The translator must:
 
 #### 4.3.3 Function Handling
 The translator must:
-- Map RQL functions to their JSONLogic equivalents
+- Map REL functions to their JSONLogic equivalents
 - Preserve function arguments in the correct order
 - Support all functions specified in the language specification
 
@@ -186,7 +185,7 @@ The translator must:
 
 #### 4.4.1 Core Functionality
 The CLI must:
-- Parse RQL expressions from strings or files
+- Parse REL expressions from strings or files
 - Output JSONLogic to stdout or files
 - Support pretty-printing for human readability
 - Return appropriate exit codes (0 for success, non-zero for errors)
@@ -195,13 +194,13 @@ The CLI must:
 The CLI must support these usage patterns:
 ```
 # Input from file, output to file
-rql translate <input.rql> --out <output.json> [--pretty]
+rel translate <input.rel> --out <output.json> [--pretty]
 
 # Input from string, output to file
-rql translate --inline "<expression>" --out <output.json> [--pretty]
+rel translate --inline "<expression>" --out <output.json> [--pretty]
 
 # Input from string, output to stdout
-rql translate --inline "<expression>" [--pretty]
+rel translate --inline "<expression>" [--pretty]
 ```
 
 #### 4.4.3 Error Reporting
@@ -215,15 +214,15 @@ The CLI must:
 
 #### 4.5.1 Core Functionality
 The API must:
-- Accept POST requests with RQL expressions
+- Accept POST requests with REL expressions
 - Return JSONLogic in the response
 - Support JSON input and output formats
 - Provide appropriate status codes and error messages
 
 #### 4.5.2 Endpoints
 The API must implement:
-- `POST /translate`: Translate RQL to JSONLogic
-  - Request: `{"dsl": "@age > 18 AND @age <= 22"}`
+- `POST /translate`: Translate REL to JSONLogic
+  - Request: `{"expression": "@age > 18 AND @age <= 22"}`
   - Response: `{"success": true, "json_logic": {"and": [{">":[{"var":"age"},18]},{"<=":[{"var":"age"},22]}]}}`
 
 #### 4.5.3 Error Handling
@@ -264,7 +263,7 @@ The API must:
 ## 5. Functional Specifications
 
 ### 5.1 Language Grammar
-The RQL grammar will be implemented using the Participle library. A simplified EBNF-like grammar is:
+The REL grammar will be implemented using the Participle library. A simplified EBNF-like grammar is:
 
 ```
 Expression    = LogicalExpr
@@ -292,22 +291,22 @@ The AST will consist of the following node types:
 - FunctionCall (name, arguments)
 
 ### 5.3 JSONLogic Translation
-The translator will map RQL constructs to JSONLogic as follows:
+The translator will map REL constructs to JSONLogic as follows:
 
 #### 5.3.1 Logical Operators
-- `A AND B` → `{"and": [A_json, B_json]}`
-- `A OR B` → `{"or": [A_json, B_json]}`
-- `NOT A` → `{"!": [A_json]}`
+- `A AND B` → `{"and": [{"var":"a"}, {"var":"b"}]}`
+- `A OR B` → `{"or": [{"var":"a"}, {"var":"b"}]}`
+- `NOT A` → `{"!": [{"var":"a"}]}`
 
 #### 5.3.2 Comparison Operators
-- `A == B` → `{"==": [A_json, B_json]}`
-- `A === B` → `{"===": [A_json, B_json]}`
-- `A != B` → `{"!=": [A_json, B_json]}`
-- `A !== B` → `{"!==": [A_json, B_json]}`
-- `A > B` → `{">": [A_json, B_json]}`
-- `A < B` → `{"<": [A_json, B_json]}`
-- `A >= B` → `{">=": [A_json, B_json]}`
-- `A <= B` → `{"<=": [A_json, B_json]}`
+- `A == B` → `{"==": [{"var": "A"}, {"var": "B"}]}`
+- `A === B` → `{"==": [{"var": "A"}, {"var": "B"}]}`
+- `A != B` → `{"!=": [{"var": "A"}, {"var": "B"}]}`
+- `A !== B` → `{"!=": [{"var": "A"}, {"var": "B"}]}`
+- `A > B` → `{">": [{"var": "A"}, {"var": "B"}]}`
+- `A < B` → `{"<": [{"var": "A"}, {"var": "B"}]}`
+- `A >= B` → `{">=": [{"var": "A"}, {"var": "B"}]}`
+- `A <= B` → `{"<=": [{"var": "A"}, {"var": "B"}]}`
 
 #### 5.3.3 Numeric Operations
 - `A + B` → `{"+": [A_json, B_json]}`
@@ -332,7 +331,7 @@ The CLI will implement the following commands:
 
 #### 5.4.1 Translate Command
 ```
-rql translate [flags] [file]
+rel translate [flags] [file]
 ```
 
 Flags:
@@ -342,13 +341,13 @@ Flags:
 
 #### 5.4.2 Version Command
 ```
-rql version
+rel version
 ```
 Outputs the current version of the tool.
 
 #### 5.4.3 Help Command
 ```
-rql help [command]
+rel help [command]
 ```
 Provides help information for the specified command.
 
@@ -395,7 +394,7 @@ Error Response:
 ## 6. Technical Architecture
 
 ### 6.1 System Components
-1. **DSL Parser**: Parses RQL expressions into an AST
+1. **DSL Parser**: Parses REL expressions into an AST
 2. **AST Model**: Defines the structure of the AST
 3. **Translator**: Converts the AST to JSONLogic
 4. **CLI Interface**: Provides command-line access
@@ -490,7 +489,7 @@ HTTP API → DSL Parser → AST Model → Translator → JSONLogic Output
 ## 10. Appendices
 
 ### 10.1 Glossary
-- **RQL**: Rule Query Language, the DSL defined in this document
+- **REL**: Rule Query Language, the DSL defined in this document
 - **DSL**: Domain-Specific Language
 - **JSONLogic**: A JSON-based format for defining conditional logic
 - **AST**: Abstract Syntax Tree, a tree representation of code

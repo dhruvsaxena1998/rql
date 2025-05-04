@@ -1,0 +1,5 @@
+bin/
+
+# AI Configuration Files
+.clinerules
+

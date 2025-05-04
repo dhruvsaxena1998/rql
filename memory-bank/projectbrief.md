@@ -8,7 +8,7 @@
     - Array Operations ( IN, CONTAINS, MAP, FILTER, ALL, NONE, SOME )
     - String Operations ( IN )
     - Accessor ( @ ) -> @ will be use as variable
-- DSL will support `.rql` file extension.
+- DSL will support `.rel` file extension.
 
 ## Project Scope
 > MVP

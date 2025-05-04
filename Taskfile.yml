@@ -1,0 +1,32 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  build:
+    desc: "Build the rel CLI binary"
+    cmds:
+      - go build -o bin/rel ./main.go
+
+  run:
+    desc: Build and run the REL CLI
+    cmds:
+      - task: build
+      - ./bin/rel {{join .ARGS " "}}
+    silent: true
+
+  dev:
+    desc: "Run the rel CLI for development using go run"
+    cmds:
+      - echo "Running (dev): go run ./main.go"
+      - go run ./main.go {{join .ARGS " "}}
+    silent: true
+    

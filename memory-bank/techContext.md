@@ -15,8 +15,8 @@
     - Install Git for version control.
 2. Clone the repository:
     ```bash
-    git clone git@github.com/dhruvsaxena119/rql.git
-    cd rql
+    git clone git@github.com/dhruvsaxena119/rel.git
+    cd rel
     go mod tidy
     ```
 3. Environment Variables
@@ -38,9 +38,9 @@
 
     - Access the CLI tool:
     ```bash
-    go build -o bin/rql ./cmd/rql/main.go
-    ./bin/rql translate --inline "@age > 18 AND @age <= 22" --pretty
-    ./bin/rql translate input.rql --out output.json 
+    go build -o bin/rel ./cmd/rel/main.go
+    ./bin/rel translate --inline "@age > 18 AND @age <= 22" --pretty
+    ./bin/rel translate input.rel --out output.json 
     ```
 
 ## Technical Constraints
@@ -57,16 +57,16 @@
 
 ## Tool Usage Patterns
 - Cli Usage
-    - `rql translate <file>`: Parses the DSL expression and outputs JSONLogic.
+    - `rel translate <file>`: Parses the DSL expression and outputs JSONLogic.
     ```
         # input from file, output to file
-        rql translate <input.rql> --out <output.json> [--pretty]
+        rel translate <input.rel> --out <output.json> [--pretty]
 
         # output to file
-        rql translate --inline "<expression>" --out <output.json> [--pretty]
+        rel translate --inline "<expression>" --out <output.json> [--pretty]
 
         # output to stdout
-        rql translate --inline "<expression>" [--pretty]
+        rel translate --inline "<expression>" [--pretty]
     ```
 - HTTP Usage
     - `POST /translate`: Accepts a JSON body with the DSL expression and returns the JSONLogic output.
