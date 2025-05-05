@@ -3,30 +3,45 @@
 version: '3'
 
 vars:
-  GREETING: Hello, World!
+  BIN: './bin'
+  CLI_NAME: 'rel'
+  SERVER_NAME: 'rel-server'
+  SERVER_PORT: '8080'
 
 tasks:
   default:
+    desc: List available tasks
     cmds:
-      - echo "{{.GREETING}}"
-    silent: true
+      - task --list-all
 
-  build:
-    desc: "Build the rel CLI binary"
+  # Build tasks
+  build:cli:
+    desc: Build CLI binary
     cmds:
-      - go build -o bin/rel ./main.go
+      - mkdir -p ./bin
+      - go build -o ./bin/rel ./cmd/cli/main.go
 
-  run:
-    desc: Build and run the REL CLI
+  build:server:
+    desc: Build server binary
     cmds:
-      - task: build
-      - ./bin/rel {{join .ARGS " "}}
-    silent: true
+      - mkdir -p ./bin
+      - go build -o ./bin/rel-server ./cmd/server/main.go
 
-  dev:
-    desc: "Run the rel CLI for development using go run"
+  # Run tasks
+  run:cli:
+    desc: Run CLI
     cmds:
-      - echo "Running (dev): go run ./main.go"
-      - go run ./main.go {{join .ARGS " "}}
-    silent: true
-    
+      - go run cmd/cli/main.go {{.CLI_ARGS}}
+
+  run:server:
+    desc: Run server
+    cmds:
+      - task build:server
+      - go run ./cmd/server/main.go
+
+  # Test tasks
+  test:parser:
+    desc: Run Parser tests
+    cmds:
+      - go test ./internal/parser/... -cover ./.coverage/parser.out
+      - go tool cover -html ./.coverage/parser.out -o ./.coverage/parser.html

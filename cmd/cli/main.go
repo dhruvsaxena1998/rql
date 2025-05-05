@@ -1,6 +1,9 @@
-package cli
+package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/dhruvsaxena1998/rel/cmd/cli/commands"
 	"github.com/spf13/cobra"
 )
@@ -17,4 +20,11 @@ var RootCommand = &cobra.Command{
 
 func init() {
 	RootCommand.AddCommand(commands.TranslateCommand)
+}
+
+func main() {
+	if err := RootCommand.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
 }
