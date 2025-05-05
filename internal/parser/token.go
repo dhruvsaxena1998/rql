@@ -55,6 +55,7 @@ const (
 	AND TokenType = "AND"
 	OR  TokenType = "OR"
 	IN  TokenType = "IN"
+	NOT TokenType = "NOT"
 	LOG TokenType = "LOG"
 )
 

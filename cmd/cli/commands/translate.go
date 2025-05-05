@@ -1,9 +1,11 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
+	"github.com/dhruvsaxena1998/rel/internal/parser"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +45,47 @@ var TranslateCommand = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Translating REL to JSONLogic: %s\n", input)
+		// Create lexer and parser
+		lexer := parser.NewLexer(input)
+		p := parser.NewParser(lexer)
+
+		// Parse expression
+		expression := p.ParseExpression()
+		if expression == nil {
+			return fmt.Errorf("parsing error: %v", p.Errors())
+		}
+
+		// Transform to JSONLogic
+		jsonLogic, err := parser.Transform(expression)
+		if err != nil {
+			return fmt.Errorf("transform error: %v", err)
+		}
+
+		// Write output
+		var out *os.File
+		if outFile != "" {
+			var err error
+			out, err = os.Create(outFile)
+			if err != nil {
+				return fmt.Errorf("failed to create output file: %v", err)
+			}
+			defer out.Close()
+		} else {
+			out = os.Stdout
+		}
+
+		// Create encoder and disable HTML escaping
+		enc := json.NewEncoder(out)
+		enc.SetEscapeHTML(false)
+		if prettyPrint {
+			enc.SetIndent("", "  ")
+		}
+
+		// Encode JSONLogic directly
+		if err := enc.Encode(jsonLogic); err != nil {
+			return fmt.Errorf("JSON encoding error: %v", err)
+		}
+
 		return nil
 	},
 }

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"strings"
 	"unicode"
 )
 
@@ -107,35 +106,30 @@ func (l *Lexer) readNumber() string {
 
 // readString reads a quoted string literal, including delimiters.
 func (l *Lexer) readString() string {
-	l.readChar() // skip opening '"'
+	quote := l.ch // store the opening quote type (' or ")
+	start := l.position
+	l.readChar() // move past opening quote
 
-	var result strings.Builder
-	for l.ch != '"' && l.ch != 0 {
+	for l.ch != quote && l.ch != 0 {
 		if l.ch == '\\' {
 			l.readChar()
-			switch l.ch {
-			case '"':
-				result.WriteRune('"')
-			case 'n':
-				result.WriteRune('\n')
-			case 't':
-				result.WriteRune('\t')
-			case '\\':
-				result.WriteRune('\\')
-			default:
-				result.WriteRune(l.ch)
+			if l.ch == quote || l.ch == '\\' {
+				l.readChar()
+				continue
 			}
-		} else {
-			result.WriteRune(l.ch)
 		}
 		l.readChar()
 	}
-	// skip closing '"'
-	l.readChar()
-	return result.String()
+
+	if l.ch == quote {
+		l.readChar() // move past closing quote
+	}
+
+	// Return the full string including quotes
+	return l.input[start:l.position]
 }
 
-func (l *Lexer) nextToken() Token {
+func (l *Lexer) NextToken() Token {
 	var token Token
 
 	l.skipWhitespaceAndComments()
@@ -210,8 +204,15 @@ func (l *Lexer) nextToken() Token {
 		token = NewToken(RBRACE, "}")
 
 	case '"', '\'':
+		quoteChar := l.ch
 		literal := l.readString()
-		token = Token{Type: STRING, Literal: literal}
+		// Ensure the string is properly quoted
+		if len(literal) < 2 || rune(literal[0]) != quoteChar || rune(literal[len(literal)-1]) != quoteChar {
+			token = NewToken(ILLEGAL, literal)
+		} else {
+			token = Token{Type: STRING, Literal: literal}
+		}
+		return token // Return immediately to avoid calling readChar again
 
 	case '@':
 		literal := l.readVariable()

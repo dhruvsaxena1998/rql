@@ -43,5 +43,6 @@ tasks:
   test:parser:
     desc: Run Parser tests
     cmds:
-      - go test ./internal/parser/... -cover ./.coverage/parser.out
+      - mkdir -p ./.coverage
+      - go test ./internal/parser/... -coverprofile=./.coverage/parser.out
       - go tool cover -html ./.coverage/parser.out -o ./.coverage/parser.html
