@@ -65,3 +65,9 @@ type IfExpression struct {
 }
 
 func (n *IfExpression) expression() {}
+
+type BooleanExpression struct {
+	Value bool
+}
+
+func (n *BooleanExpression) expression() {}

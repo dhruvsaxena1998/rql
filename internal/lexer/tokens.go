@@ -33,6 +33,7 @@ const (
 	ASSIGN
 	EQ
 	NOT
+	NOT_NOT
 	STRICT_EQ
 	NOT_EQ
 	NOT_STRICT_EQ
@@ -57,17 +58,18 @@ const (
 )
 
 var ReservedKeywords map[string]TokenType = map[string]TokenType{
-	"true":  TRUE,
-	"false": FALSE,
-	"null":  NULL,
-	"let":   LET,
-	"const": CONST,
-	"if":    IF,
-	"else":  ELSE,
-	"not":   NOT,
-	"in":    IN,
-	"and":   AND,
-	"or":    OR,
+	"true":    TRUE,
+	"false":   FALSE,
+	"null":    NULL,
+	"let":     LET,
+	"const":   CONST,
+	"if":      IF,
+	"else":    ELSE,
+	"not":     NOT,
+	"not not": NOT_NOT,
+	"in":      IN,
+	"and":     AND,
+	"or":      OR,
 }
 
 func (token Token) IsOneOfMany(expectedTokens ...TokenType) bool {
@@ -122,6 +124,8 @@ func TokenTypeString(tokentype TokenType) string {
 		return "eq"
 	case NOT:
 		return "not"
+	case NOT_NOT:
+		return "not not"
 	case STRICT_EQ:
 		return "strict_eq"
 	case NOT_EQ:

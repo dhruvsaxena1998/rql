@@ -80,13 +80,11 @@ func handleTranslateCommand(cmd *cobra.Command, args []string) error {
 	tokens := lexer.Tokenize(input)
 	ast := parser.Parse(tokens)
 
-	jsonlogic := translator.TranslateToJSONLogic(ast)
-
 	if debug {
-		// litter.Dump(tokens)
+		litter.Dump(tokens)
 		litter.Dump(ast)
-		litter.Dump(jsonlogic)
 	}
+	jsonlogic := translator.TranslateToJSONLogic(ast)
 
 	err = handleOutput(jsonlogic)
 	if err != nil {

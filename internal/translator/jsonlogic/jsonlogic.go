@@ -39,6 +39,9 @@ func translateExpression(expr ast.Expression) any {
 	case *ast.SymbolExpression:
 		return e.Value
 
+	case *ast.BooleanExpression:
+		return e.Value
+
 	case *ast.ArrayLiteral:
 		elements := make([]any, len(e.Elements))
 		for i, element := range e.Elements {
@@ -73,7 +76,7 @@ func translatePrefixExpression(operator lexer.Token, right ast.Expression) any {
 	result := make(map[string]any)
 
 	switch operator.Type {
-	case lexer.NOT:
+	case lexer.NOT, lexer.NOT_NOT:
 		result[operator.Literal] = translateExpression(right)
 	}
 

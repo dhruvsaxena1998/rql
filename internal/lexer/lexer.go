@@ -134,6 +134,7 @@ func createLexer(source string) *Lexer {
 			{regex: regexp.MustCompile(`!==`), handler: defaultHandler(NOT_STRICT_EQ, "!==")},
 			{regex: regexp.MustCompile(`!=`), handler: defaultHandler(NOT_EQ, "!=")},
 			{regex: regexp.MustCompile(`=`), handler: defaultHandler(ASSIGN, "=")},
+			{regex: regexp.MustCompile(`!!`), handler: defaultHandler(NOT_NOT, "!!")},
 			{regex: regexp.MustCompile(`!`), handler: defaultHandler(NOT, "!")},
 			{regex: regexp.MustCompile(`>=`), handler: defaultHandler(GTE, ">=")},
 			{regex: regexp.MustCompile(`<=`), handler: defaultHandler(LTE, "<=")},

@@ -48,6 +48,12 @@ func parsePrimaryExpression(p *parser) ast.Expression {
 		return &ast.SymbolExpression{Value: p.advance().Literal}
 	case lexer.VARIABLE:
 		return &ast.VariableExpression{Value: p.advance().Literal}
+	case lexer.TRUE:
+		p.advance()
+		return &ast.BooleanExpression{Value: true}
+	case lexer.FALSE:
+		p.advance()
+		return &ast.BooleanExpression{Value: false}
 
 	default:
 		panic(fmt.Sprintf("cannot create primary expression for %s\n", lexer.TokenTypeString(p.currentToken().Type)))

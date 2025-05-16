@@ -1,1 +1,1 @@
-"spring" in "springfield"
+(@age > 18 and @country == 'india') or (@age > 21 and @country == 'china')

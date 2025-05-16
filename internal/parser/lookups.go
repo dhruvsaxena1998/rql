@@ -68,6 +68,7 @@ func createTokenLookups() {
 	// Unary
 	registerLedHandler(lexer.ASSIGN, assignment, parseAssignmentExpression)
 	registerNudHandler(lexer.NOT, parsePrefixExpression)
+	registerNudHandler(lexer.NOT_NOT, parsePrefixExpression)
 
 	// Logical
 	registerLedHandler(lexer.AND, logical, parseBinaryExpression)
@@ -91,6 +92,10 @@ func createTokenLookups() {
 	registerNudHandler(lexer.STRING, parsePrimaryExpression)
 	registerNudHandler(lexer.IDENTIFIER, parsePrimaryExpression)
 	registerNudHandler(lexer.VARIABLE, parsePrimaryExpression)
+
+	// Bool
+	registerNudHandler(lexer.TRUE, parsePrimaryExpression)
+	registerNudHandler(lexer.FALSE, parsePrimaryExpression)
 
 	// If Expression
 	registerNudHandler(lexer.IF, parseIfExpression)

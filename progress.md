@@ -1,15 +1,14 @@
 # Progress:
 
-## Support
+## Supportted Operations
 
 ### Basic
 - [X] number
 - [X] string
 - [X] symbol `?`
-- [ ] boolean
+- [X] boolean
 - [X] array literals 
 - [ ] parentheses (grouping)
-- [ ] multiple operations (translate multiple expressions at once)
 
 ### Variables
 - [X] var
@@ -21,7 +20,7 @@
 - [X] !=
 - [X] !==
 - [X] !
-- [ ] !!
+- [X] !!
 - [X] or
 - [X] and
 
@@ -53,3 +52,11 @@
 
 ### Miscellaneous
 - [ ] log
+
+
+## Features
+- [ ] Comments
+- [ ] multiple operations (translate multiple expressions at once)
+- [ ] Assignment
+- [ ] Functions
+    - [ ] Evaluate
