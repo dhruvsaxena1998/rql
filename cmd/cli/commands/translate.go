@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/dhruvsaxena1998/rel/internal/lexer"
 	"github.com/dhruvsaxena1998/rel/internal/parser"
@@ -14,7 +15,7 @@ import (
 
 var (
 	prettyPrint bool
-	debug       bool
+	debug       string
 	inlineInput string
 	inputFile   string
 	outFile     string
@@ -38,10 +39,10 @@ func init() {
 		"pretty print the output",
 	)
 
-	TranslateCommand.Flags().BoolVar(
+	TranslateCommand.Flags().StringVar(
 		&debug,
 		"debug",
-		false,
+		"",
 		"log debug statements",
 	)
 
@@ -78,14 +79,16 @@ func handleTranslateCommand(cmd *cobra.Command, args []string) error {
 	}
 
 	tokens := lexer.Tokenize(input)
-	ast := parser.Parse(tokens)
-
-	if debug {
+	if strings.Contains(debug, "tokens") {
 		litter.Dump(tokens)
+	}
+
+	ast := parser.Parse(tokens)
+	if strings.Contains(debug, "ast") {
 		litter.Dump(ast)
 	}
-	jsonlogic := translator.TranslateToJSONLogic(ast)
 
+	jsonlogic := translator.TranslateToJSONLogic(ast)
 	err = handleOutput(jsonlogic)
 	if err != nil {
 		return err

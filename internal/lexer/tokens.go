@@ -42,6 +42,7 @@ const (
 	LT
 	GTE
 	LTE
+	BETWEEN
 
 	COLON
 	SEMICOLON
@@ -70,6 +71,7 @@ var ReservedKeywords map[string]TokenType = map[string]TokenType{
 	"in":      IN,
 	"and":     AND,
 	"or":      OR,
+	"between": BETWEEN,
 }
 
 func (token Token) IsOneOfMany(expectedTokens ...TokenType) bool {
@@ -141,6 +143,8 @@ func TokenTypeString(tokentype TokenType) string {
 		return "gte"
 	case LTE:
 		return "lte"
+	case BETWEEN:
+		return "between"
 
 	case COLON:
 		return "colon"

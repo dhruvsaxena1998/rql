@@ -1,6 +1,8 @@
 package translator
 
 import (
+	"fmt"
+
 	"github.com/dhruvsaxena1998/rel/internal/ast"
 	"github.com/dhruvsaxena1998/rel/internal/lexer"
 )
@@ -27,6 +29,9 @@ func translateExpression(expr ast.Expression) any {
 	case *ast.PrefixExpression:
 		return translatePrefixExpression(e.Operator, e.Right)
 
+	case *ast.BetweenExpression:
+		return translateBetweenExpression(e.Left, e.Inclusive, e.Range)
+
 	case *ast.VariableExpression:
 		return map[string]any{"var": e.Value[1:]}
 
@@ -49,7 +54,7 @@ func translateExpression(expr ast.Expression) any {
 		}
 		return elements
 	default:
-		return nil
+		panic(fmt.Sprintf("cannot translate expression: %T", expr))
 	}
 }
 
@@ -65,7 +70,7 @@ func translateBinaryExpression(left ast.Expression, operator lexer.Token, right 
 		leftExpr := translateExpression(left)
 		rightExpr := translateExpression(right)
 
-		conditions := combineAndConditions(operator.Literal, leftExpr, rightExpr)
+		conditions := combineConditions(operator.Literal, leftExpr, rightExpr)
 		result[operator.Literal] = conditions
 	}
 
@@ -76,14 +81,37 @@ func translatePrefixExpression(operator lexer.Token, right ast.Expression) any {
 	result := make(map[string]any)
 
 	switch operator.Type {
-	case lexer.NOT, lexer.NOT_NOT:
-		result[operator.Literal] = translateExpression(right)
+	case lexer.NOT:
+		result["!"] = translateExpression(right)
+	case lexer.NOT_NOT:
+		result["!!"] = translateExpression(right)
 	}
 
 	return result
 }
 
-func combineAndConditions(operator string, expressions ...any) []any {
+func translateBetweenExpression(left ast.Expression, inclusive [2]bool, right [2]ast.Expression) any {
+	result := make(map[string]any)
+
+	lowerOperator := ">"
+	if inclusive[0] {
+		lowerOperator = ">="
+	}
+
+	upperOperator := "<"
+	if inclusive[1] {
+		upperOperator = "<="
+	}
+
+	result["and"] = []any{
+		map[string]any{lowerOperator: []any{translateExpression(left), translateExpression(right[0])}},
+		map[string]any{upperOperator: []any{translateExpression(left), translateExpression(right[1])}},
+	}
+
+	return result
+}
+
+func combineConditions(operator string, expressions ...any) []any {
 	conditions := make([]any, 0)
 
 	for _, expr := range expressions {
