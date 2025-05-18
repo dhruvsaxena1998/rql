@@ -85,6 +85,8 @@ func NewToken(tokenType TokenType, literal string) Token {
 	}
 }
 
+// TokenTypeString returns the string representation of a given TokenType.
+// If the TokenType is unrecognized, it returns "unknown".
 func TokenTypeString(tokentype TokenType) string {
 	switch tokentype {
 	case EOF:

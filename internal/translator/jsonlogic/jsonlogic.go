@@ -21,6 +21,8 @@ func TranslateToJSONLogic(blockStatement ast.BlockStatement) map[string]any {
 	return map[string]any{}
 }
 
+// translateExpression converts an AST expression node into its corresponding JSON Logic representation.
+// It handles binary, prefix, between, variable, literal, and array expressions, panicking if the expression type is unsupported.
 func translateExpression(expr ast.Expression) any {
 	switch e := expr.(type) {
 	case *ast.BinaryExpression:
@@ -58,6 +60,9 @@ func translateExpression(expr ast.Expression) any {
 	}
 }
 
+// translateBinaryExpression converts a binary AST expression into its JSON Logic representation based on the operator type.
+// For comparison and equality operators, it returns a map with the operator as key and the translated operands as a two-element array.
+// For logical "and" and "or" operators, it flattens nested conditions of the same type and returns a map with the operator as key and the combined conditions as an array.
 func translateBinaryExpression(left ast.Expression, operator lexer.Token, right ast.Expression) any {
 
 	result := make(map[string]interface{})
@@ -77,6 +82,7 @@ func translateBinaryExpression(left ast.Expression, operator lexer.Token, right 
 	return result
 }
 
+// translatePrefixExpression converts a prefix logical expression (such as NOT or double NOT) into its JSON Logic representation.
 func translatePrefixExpression(operator lexer.Token, right ast.Expression) any {
 	result := make(map[string]any)
 
@@ -90,6 +96,7 @@ func translatePrefixExpression(operator lexer.Token, right ast.Expression) any {
 	return result
 }
 
+// translateBetweenExpression converts a "between" AST expression into a JSON Logic "and" condition with appropriate comparison operators for the lower and upper bounds.
 func translateBetweenExpression(left ast.Expression, inclusive [2]bool, right [2]ast.Expression) any {
 	result := make(map[string]any)
 
@@ -111,6 +118,8 @@ func translateBetweenExpression(left ast.Expression, inclusive [2]bool, right [2
 	return result
 }
 
+// combineConditions flattens nested logical conditions of the same operator into a single slice.
+// It merges any sub-expressions that use the same logical operator, producing a flat list of conditions for use in JSON Logic structures.
 func combineConditions(operator string, expressions ...any) []any {
 	conditions := make([]any, 0)
 

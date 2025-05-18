@@ -116,6 +116,7 @@ func parseArrayExpression(p *parser) ast.Expression {
 	}
 }
 
+// parseIfExpression parses an if expression with one or more condition-consequent branches and an optional else branch.
 func parseIfExpression(p *parser) ast.Expression {
 	p.advance() // Consume the if token
 
@@ -163,6 +164,9 @@ func parseIfExpression(p *parser) ast.Expression {
 	}
 }
 
+// parseBetweenExpression parses a "between" expression with inclusive or exclusive bounds and returns a BetweenExpression AST node.
+// It expects the "between" token, followed by either '(' or '[' to indicate lower bound inclusivity, parses the lower and upper bounds separated by a comma, and then expects ')' or ']' to indicate upper bound inclusivity.
+// Panics if the expected delimiters are not found.
 func parseBetweenExpression(p *parser, left ast.Expression, bp bindingPower) ast.Expression {
 	p.advance() // Consume the between token
 

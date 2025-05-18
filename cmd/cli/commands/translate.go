@@ -30,6 +30,7 @@ var TranslateCommand = &cobra.Command{
 	},
 }
 
+// init configures command-line flags and options for the translate command.
 func init() {
 	TranslateCommand.Flags().BoolVarP(
 		&prettyPrint,
@@ -72,6 +73,8 @@ func init() {
 	)
 }
 
+// handleTranslateCommand processes the 'translate' CLI command by reading a REL expression, parsing and translating it to JSONLogic, and writing the result to the specified output.
+// Returns an error if input retrieval, parsing, translation, or output fails.
 func handleTranslateCommand(cmd *cobra.Command, args []string) error {
 	input, err := handleInput()
 	if err != nil {

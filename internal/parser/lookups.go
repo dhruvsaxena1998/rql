@@ -64,6 +64,8 @@ func registerStatementHandler(tokenType lexer.TokenType, handler statementHandle
 	statementLU[tokenType] = handler
 }
 
+// createTokenLookups initializes the token handler and binding power lookup tables for the parser.
+// It registers parsing functions for various token types, associating them with their appropriate handler and precedence.
 func createTokenLookups() {
 	// Unary
 	registerLedHandler(lexer.ASSIGN, assignment, parseAssignmentExpression)
