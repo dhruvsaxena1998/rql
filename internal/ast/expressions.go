@@ -1,6 +1,8 @@
 package ast
 
-import "github.com/dhruvsaxena1998/rel/internal/lexer"
+import (
+	"github.com/dhruvsaxena1998/rel/internal/lexer"
+)
 
 type NumberExpression struct {
 	Value float64
@@ -71,3 +73,11 @@ type BooleanExpression struct {
 }
 
 func (n *BooleanExpression) expression() {}
+
+type BetweenExpression struct {
+	Left      Expression
+	Range     [2]Expression
+	Inclusive [2]bool // true -> (, false -> ]
+}
+
+func (n *BetweenExpression) expression() {}

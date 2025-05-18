@@ -162,3 +162,39 @@ func parseIfExpression(p *parser) ast.Expression {
 		Branches: branches,
 	}
 }
+
+func parseBetweenExpression(p *parser, left ast.Expression, bp bindingPower) ast.Expression {
+	p.advance() // Consume the between token
+
+	betweenExpression := &ast.BetweenExpression{
+		Left:      left,
+		Range:     [2]ast.Expression{nil, nil},
+		Inclusive: [2]bool{false, false},
+	}
+
+	if p.currentToken().IsOneOfMany(lexer.LPAREN, lexer.LBRACKET) {
+		if p.currentToken().Type == lexer.LPAREN {
+			betweenExpression.Inclusive[0] = true
+		}
+		p.advance() // Consume the opening token
+	} else {
+		panic(fmt.Sprintf("expected ( or [ after between, got %s\n", lexer.TokenTypeString(p.currentToken().Type)))
+	}
+
+	lowerBound := parseExpression(p, defaultBindingPower)
+	p.expect(lexer.COMMA)
+	upperBound := parseExpression(p, defaultBindingPower)
+
+	if p.currentToken().IsOneOfMany(lexer.RPAREN, lexer.RBRACKET) {
+		if p.currentToken().Type == lexer.RPAREN {
+			betweenExpression.Inclusive[1] = true
+		}
+		p.advance() // Consume the closing token
+	} else {
+		panic(fmt.Sprintf("expected ) or ] after expression, got %s\n", lexer.TokenTypeString(p.currentToken().Type)))
+	}
+
+	betweenExpression.Range = [2]ast.Expression{lowerBound, upperBound}
+
+	return betweenExpression
+}

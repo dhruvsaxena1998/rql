@@ -85,6 +85,9 @@ func createTokenLookups() {
 	registerLedHandler(lexer.NOT_STRICT_EQ, relational, parseBinaryExpression)
 	registerLedHandler(lexer.IN, relational, parseBinaryExpression)
 
+	// Between
+	registerLedHandler(lexer.BETWEEN, relational, parseBetweenExpression)
+
 	// Additive & Multiplicative
 
 	// Literals and Symbols

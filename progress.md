@@ -8,7 +8,7 @@
 - [X] symbol `?`
 - [X] boolean
 - [X] array literals 
-- [ ] parentheses (grouping)
+- [X] parentheses (grouping)
 
 ### Variables
 - [X] var
@@ -29,7 +29,7 @@
 - [X] >=
 - [X] <
 - [X] <=
-- [ ] between
+- [X] between
 - [ ] max
 - [ ] min
 - [ ] Arithmetic (+ - * /)
