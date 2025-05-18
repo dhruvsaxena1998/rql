@@ -1,0 +1,47 @@
+language: "en-US"
+early_access: false
+
+chat:
+  auto_reply: true
+  triggers:
+    - keywords: ["help", "review", "check"]
+      response: "👌 Got it! I'll review that for you right away."
+
+tone_instructions: >-
+  Maintain a formal tone, highlighting issues, and suggesting production-grade, elegant, and concise solutions.
+
+reviews:
+  profile: chill
+  high_level_summary: true
+  poem: false
+  collapse_walkthrough: true
+  sequence_diagrams: true
+
+  path_filters:
+    - "!**/*.pb.go"
+    - "!**/*.pb.gw.go"
+    - "!**/*_pb.d.ts"
+
+  path_instructions:
+    - path: '**/*.go'
+      instructions: |
+        Review the Golang files with a focus on the project's goals:
+        - Code Quality and Maintainability: Focus on readability, proper use of Go idioms, and maintainable code structure. Check
+          for consistent naming conventions, efficient error handling, and adequate documentation, including meaningful comments where needed.
+        - Performance and Scalability: Identify any potential areas for performance improvement, especially concerning actor behavior,
+          concurrency, and data persistence. Suggest refactoring if the code can be streamlined or optimized.
+    - path: '**/*.sh'
+      instructions: >-
+        Review the shell scripts, point out issues relative to security,
+        performance, and maintainability.
+
+  auto_review:
+    drafts: false
+    auto_incremental_review: false
+    base_branches:
+      - development
+
+  tools:
+    languagetool:
+      enabled: true
+      level: default
