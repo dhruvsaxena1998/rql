@@ -1,0 +1,87 @@
+[{
+  "and": [
+    {
+      "in": [
+        {
+          "var": "{{WAYBILL_TO_FIELD}}"
+        },
+        "{{WAYBILL_TO_VALUE}}"
+      ]
+    }
+  ]
+}
+,
+{
+  "and": [
+    {
+      "some": [
+        {
+          "var": "charge_details"
+        },
+        {
+          ">": [
+            {
+              "var": "os_cost"
+            },
+            "{{LOCAL_COST_THRESHOLD}}"
+          ]
+        }
+      ]
+    },
+    {
+      "in": [
+        {
+          "var": "{{WAYBILL_TO_FIELD}}"
+        },
+        "{{WAYBILL_TO_VALUE}}"
+      ]
+    }
+  ]
+},
+{
+  "some": [
+      {
+        "var": "charge_details"
+      },
+      {
+        ">": [
+          {
+            "var": "local_cost"
+          },
+          "{{LOCAL_COST_THRESHOLD}}"
+        ]
+      }
+    ]
+}
+,
+{
+  "and": [
+    {
+      "some": [
+        {
+          "var": "charge_details"
+        },
+        {
+          ">": [
+            {
+              "var": "os_cost"
+            },
+            "{{LOCAL_COST_THRESHOLD}}"
+          ]
+        }
+      ]
+    },
+    {
+      "!": {
+        "in": [
+          {
+            "var": "{{WAYBILL_TO_FIELD}}"
+          },
+          "{{WAYBILL_TO_VALUE}}"
+        ]
+      }
+    }
+  ]
+}]
+
+
