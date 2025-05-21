@@ -56,7 +56,9 @@
 
 ## Features
 - [ ] Comments
-- [ ] multiple operations (translate multiple expressions at once)
+- [ ] Multiple operations (translate multiple expressions at once)
+- [ ] Nested Variables Access
 - [ ] Assignment
 - [ ] Functions
     - [ ] Evaluate
+- [X] `Not In` Operator

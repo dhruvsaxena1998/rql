@@ -37,6 +37,7 @@ const (
 	STRICT_EQ
 	NOT_EQ
 	NOT_STRICT_EQ
+	NOT_IN
 
 	GT
 	LT
@@ -68,6 +69,7 @@ var ReservedKeywords map[string]TokenType = map[string]TokenType{
 	"else":    ELSE,
 	"not":     NOT,
 	"not not": NOT_NOT,
+	"not in":  NOT_IN,
 	"in":      IN,
 	"and":     AND,
 	"or":      OR,
@@ -128,6 +130,8 @@ func TokenTypeString(tokentype TokenType) string {
 		return "not"
 	case NOT_NOT:
 		return "not not"
+	case NOT_IN:
+		return "not in"
 	case STRICT_EQ:
 		return "strict_eq"
 	case NOT_EQ:

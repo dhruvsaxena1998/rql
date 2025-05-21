@@ -119,6 +119,9 @@ func createLexer(source string) *Lexer {
 			{regex: regexp.MustCompile(`"[^"]*"`), handler: stringHandler},
 			{regex: regexp.MustCompile(`'[^']*'`), handler: stringHandler},
 			{regex: regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), handler: numberHandler},
+
+			{regex: regexp.MustCompile(`not\s+in`), handler: defaultHandler(NOT_IN, "not in")},
+
 			{regex: regexp.MustCompile(`@[a-zA-Z][a-zA-Z0-9_]*`), handler: variableHandler},
 			{regex: regexp.MustCompile(`[a-zA-Z][a-zA-Z0-9_]*`), handler: symbolHandler},
 
